@@ -11,6 +11,7 @@ interface LoginForm {
   username: string;
   password: string;
   email: string;
+  errors?: string;
 }
 
 export default function Forms() {
@@ -18,8 +19,11 @@ export default function Forms() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<LoginForm>({ mode: "onBlur" }); //input을 나가면 발생
-  const onValid = (data: LoginForm) => {};
+  const onValid = (data: LoginForm) => {
+    setError("username", { message: "Taken username" });
+  };
   const onInvalid = (errors: FieldErrors) => {
     console.log(errors);
   };
@@ -36,6 +40,7 @@ export default function Forms() {
         type="text"
         placeholder="Username"
       />
+      {errors.username?.message}
       <input
         {...register("email", {
           required: "Email is required",
